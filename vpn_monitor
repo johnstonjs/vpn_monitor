@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Check that an IPSec VPN connection is established.  If not, restart the connection.
+
+DEBUG=0				# If TRUE, debug messages are printed to STDOUT
+
+
+if ipsec status | grep --quiet ESTABLISHED
+then
+  if [ $DEBUG -eq 1 ]; then
+    echo "strongSwan connection is established"
+  fi
+else
+  if [ $DEBUG -eq 1 ]; then
+    echo "strongSwan connection is not established, restarted..."
+    ipsec restart
+  else
+    ipsec restart >/dev/null 2>/dev/null
+  fi
+fi
